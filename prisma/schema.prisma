@@ -9,3 +9,102 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserRole {
+  STUDENT
+  COURSE_AUDITOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum CourseType {
+  PATHWAY
+  BREADTH
+  ELECTIVE
+  OUTSIDE_ELECTIVE
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  name                  String
+  email                 String                 @unique
+  password              String
+  role                  UserRole
+  specializationReviews SpecializationReview[]
+  courseReviews         CourseReview[]
+  sessions              Session[]
+  created               DateTime               @default(now())
+  updated               DateTime               @updatedAt
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Degree {
+  id              String           @id @default(uuid())
+  name            String
+  description     String?
+  specializations Specialization[]
+  courses         Course[]
+  created         DateTime         @default(now())
+  updated         DateTime         @updatedAt
+}
+
+model Specialization {
+  id          String                 @id @default(uuid())
+  name        String
+  description String?
+  degrees     Degree[]
+  difficulty  Float?
+  courses     Course[]
+  reviews     SpecializationReview[]
+  updatedById String
+  created     DateTime               @default(now())
+  updated     DateTime               @updatedAt
+}
+
+model Course {
+  id                     String          @id @default(uuid())
+  name                   String
+  code                   String
+  description            String?
+  type                   CourseType[]
+  degrees                Degree[]
+  difficulty             Float?
+  officialTimeEstimation Float?
+  studentTimeEstimation  Float?
+  prerequisites          String
+  specialization         Specialization? @relation(fields: [specializationId], references: [id])
+  specializationId       String?
+  reviews                CourseReview[]
+  created                DateTime        @default(now())
+  updated                DateTime        @updatedAt
+}
+
+model SpecializationReview {
+  id               String         @id @default(uuid())
+  rating           Int
+  comment          String?
+  specialization   Specialization @relation(fields: [specializationId], references: [id])
+  specializationId String
+  user             User           @relation(fields: [userId], references: [id])
+  userId           String
+  created          DateTime       @default(now())
+  updated          DateTime       @updatedAt
+}
+
+model CourseReview {
+  id       String   @id @default(uuid())
+  rating   Int
+  comment  String?
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId String
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+  created  DateTime @default(now())
+  updated  DateTime @updatedAt
+}
