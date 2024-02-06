@@ -14,11 +14,21 @@ export const lucia = new Lucia(adapter, {
       secure: !process.dev,
     },
   },
+  getUserAttributes(databaseUserAttributes) {
+    return {
+      email: databaseUserAttributes.email,
+      role: databaseUserAttributes.role,
+    };
+  },
 });
 
 // IMPORTANT!
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;
+    DatabaseUserAttributes: {
+      email: string;
+      role: string | number;
+    };
   }
 }
