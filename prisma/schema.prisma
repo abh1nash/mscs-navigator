@@ -62,6 +62,7 @@ model Specialization {
   difficulty  Float?
   courses     Course[]
   reviews     SpecializationReview[]
+  slug        String                 @unique
   updatedById String
   created     DateTime               @default(now())
   updated     DateTime               @updatedAt
@@ -81,6 +82,7 @@ model Course {
   specialization         Specialization? @relation(fields: [specializationId], references: [id])
   specializationId       String?
   reviews                CourseReview[]
+  slug                   String          @unique
   created                DateTime        @default(now())
   updated                DateTime        @updatedAt
 }
