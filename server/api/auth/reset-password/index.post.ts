@@ -1,5 +1,7 @@
 import { db } from "~/server/data/prisma";
 import * as resetToken from "~/server/data/reset-token";
+import * as mailer from "~/server/utils/mailer";
+import { useCompiler } from "#vue-email";
 
 const success = {
   message:
@@ -15,7 +17,12 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = await resetToken.create(user.id);
-  // TODO: Send email with reset link
-  console.log(token);
+
+  const template = await useCompiler("ResetPassword.vue", {
+    props: { link: getHeader(event, "Host") + "/auth/reset-password/" + token },
+  });
+
+  await mailer.send([user.email], "Reset your password", template);
+
   return success;
 });

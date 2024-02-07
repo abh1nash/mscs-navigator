@@ -12,6 +12,8 @@
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.0",
     "@nuxt/ui": "^2.13.0",
+    "@plunk/node": "^3.0.0",
+    "@vue-email/nuxt": "^0.8.13",
     "lucia": "^3.0.1",
     "nuxt": "^3.10.1",
     "oslo": "^1.0.4",
