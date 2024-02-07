@@ -26,10 +26,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ message: "Invalid email or password.", status: 404 });
   }
 
-  const session = await lucia.createSession(user.id, {
-    email: user.email,
-    role: user.role,
-  });
+  const session = await lucia.createSession(user.id, {});
   appendHeader(
     event,
     "Set-Cookie",
