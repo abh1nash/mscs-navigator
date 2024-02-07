@@ -36,7 +36,7 @@ const resetPassword = async () => {
 };
 </script>
 <template>
-  <UContainer class="flex items-center justify-center h-screen bg-gray-100">
+  <UContainer class="flex items-center justify-center h-screen">
     <div class="w-full">
       <UCard class="max-w-md mx-auto">
         <template #header>
