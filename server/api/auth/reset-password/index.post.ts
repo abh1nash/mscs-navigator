@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     props: { link: getHeader(event, "Host") + "/auth/reset-password/" + token },
   });
 
-  await mailer.sendEmail([user.email], "Reset your password", template);
+  await mailer.sendEmail([user.email], "Reset your password", template.html);
 
   return success;
 });

@@ -1,11 +1,13 @@
 import { ofetch } from "ofetch";
 
 export async function sendEmail(to: string[], subject: string, body: string) {
-  return await ofetch("https://api.plunk.email/v1/send", {
+  const config = useAppConfig();
+
+  const response = await ofetch("https://api.useplunk.com/v1/send", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
+      Authorization: `Bearer ${config.plunkAPIKey}`,
     },
     body: JSON.stringify({
       to,
@@ -13,4 +15,6 @@ export async function sendEmail(to: string[], subject: string, body: string) {
       body,
     }),
   });
+
+  return await response;
 }

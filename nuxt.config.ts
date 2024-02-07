@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui", "@vue-email/nuxt"],
   build: { transpile: ["@pluink/node"] },
+  appConfig: {
+    plunkAPIKey: process.env.PLUNK_API_KEY,
+  },
   tailwindcss: {
     config: {
       theme: {
