@@ -5,11 +5,17 @@ import { useCompiler } from "#vue-email";
 
 const success = {
   message:
-    "If the email exists in the database, you should now a password reset link. Please check your spam folders as well.",
+    "If the email exists in the database, you should now receive a password reset link. Please check your spam folders as well.",
 };
 
 export default defineEventHandler(async (event) => {
   const { email } = await readBody(event);
+  if (!email) {
+    throw createError({
+      message: "Email is required.",
+      status: 400,
+    });
+  }
   const user = await db.user.findUnique({ where: { email } });
 
   if (!user) {
