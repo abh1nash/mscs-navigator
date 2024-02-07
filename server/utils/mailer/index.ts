@@ -1,11 +1,16 @@
-import Plunk from "@plunk/node";
+import { ofetch } from "ofetch";
 
-const plunk = new Plunk(process.env.PLUNK_API_KEY || "");
-
-export async function send(to: string[], subject: string, body: string) {
-  return await plunk.emails.send({
-    to,
-    subject,
-    body,
+export async function sendEmail(to: string[], subject: string, body: string) {
+  return await ofetch("https://api.plunk.email/v1/send", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
+    },
+    body: JSON.stringify({
+      to,
+      subject,
+      body,
+    }),
   });
 }
