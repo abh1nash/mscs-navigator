@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
-  name: "Home",
+  name: "Dashboard",
+  layout: "portal",
 });
 </script>
 <template></template>

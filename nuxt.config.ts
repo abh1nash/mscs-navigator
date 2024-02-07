@@ -6,6 +6,12 @@ export default defineNuxtConfig({
   appConfig: {
     plunkAPIKey: process.env.PLUNK_API_KEY,
   },
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false,
+    },
+  ],
   tailwindcss: {
     config: {
       theme: {
