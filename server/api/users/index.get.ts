@@ -6,8 +6,8 @@ const AUTHORIZED: UserRole[] = [UserRole.ADMIN, UserRole.SUPER_ADMIN];
 
 const querySchema = z.object({
   query: z.string().optional(),
-  page: z.number().int().positive().optional(),
-  limit: z.number().int().positive().optional(),
+  page: z.coerce.number().int().positive().optional(),
+  limit: z.coerce.number().int().positive().optional(),
   sort: z.enum(["asc", "desc"]).optional(),
   role: z.nativeEnum(UserRole).optional(),
 });
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
       query: validParams.data.query,
       role: validParams.data.role,
     },
-    (validParams.data.page || 1) * (validParams.data.limit || 0),
+    ((validParams.data.page || 1) - 1) * (validParams.data.limit || 0),
     validParams.data.limit || 10
   );
   return {

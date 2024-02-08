@@ -50,13 +50,20 @@ export default defineEventHandler(async (event) => {
   // they will need to reset it
   const password = Math.random().toString(36).slice(-8);
 
-  const newUser = await users.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-  });
-
-  return { message: "User created successfully", userId: newUser.id };
+  try {
+    const newUser = await users.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+    });
+    return { message: "User created successfully", userId: newUser.id };
+  } catch (e) {
+    throw createError({
+      statusCode: 400,
+      message:
+        "Cannot create user with the given details. Check if the email is already in use.",
+    });
+  }
 });
