@@ -81,22 +81,21 @@ model Specialization {
 }
 
 model Course {
-  id                     String          @id @default(uuid())
-  name                   String
-  code                   String?
-  description            String?
-  type                   CourseType[]
-  certificates           Certificate[]
-  difficulty             Float?
-  officialTimeEstimation Float?
-  studentTimeEstimation  Float?
-  prerequisites          String
-  specialization         Specialization? @relation(fields: [specializationId], references: [id])
-  specializationId       String?
-  reviews                Review[]
-  slug                   String          @unique
-  created                DateTime        @default(now())
-  updated                DateTime        @updatedAt
+  id                       String          @id @default(uuid())
+  name                     String
+  code                     String?
+  description              String?
+  type                     CourseType[]
+  certificates             Certificate[]
+  officialTimeEstimation   Float?
+  officialDifficultyRating Float?
+  prerequisites            String
+  specialization           Specialization? @relation(fields: [specializationId], references: [id])
+  specializationId         String?
+  reviews                  Review[]
+  slug                     String          @unique
+  created                  DateTime        @default(now())
+  updated                  DateTime        @updatedAt
 }
 
 model Review {
