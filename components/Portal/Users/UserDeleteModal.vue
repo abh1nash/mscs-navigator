@@ -9,7 +9,7 @@ const emit = defineEmits<{
 }>();
 
 const isLoading = ref(false);
-
+const toast = useToast();
 const onDelete = async () => {
   try {
     isLoading.value = true;
@@ -18,7 +18,12 @@ const onDelete = async () => {
     });
     emit("complete");
   } catch (err: any) {
-    console.error(err);
+    toast.add({
+      title: "Error",
+      description: err.data?.message || "Cannot delete user",
+      icon: "i-heroicons-x-circle-20-solid",
+      color: "red",
+    });
   } finally {
     isLoading.value = false;
   }
