@@ -22,21 +22,21 @@ enum CourseType {
   BREADTH
   ELECTIVE
   OUTSIDE_ELECTIVE
+  OTHER
 }
 
 model User {
-  id                    String                 @id @default(uuid())
-  firstName             String
-  lastName              String
-  email                 String                 @unique
-  password              String
-  role                  UserRole
-  specializationReviews SpecializationReview[]
-  courseReviews         CourseReview[]
-  sessions              Session[]
-  resetTokens           ResetToken[]
-  created               DateTime               @default(now())
-  updated               DateTime               @updatedAt
+  id          String       @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String       @unique
+  password    String
+  role        UserRole
+  reviews     Review[]
+  sessions    Session[]
+  resetTokens ResetToken[]
+  created     DateTime     @default(now())
+  updated     DateTime     @updatedAt
 }
 
 model Session {
@@ -56,69 +56,64 @@ model ResetToken {
   updated   DateTime @updatedAt
 }
 
-model Degree {
+model Certificate {
   id              String           @id @default(uuid())
   name            String
   description     String?
   specializations Specialization[]
   courses         Course[]
+  reviews         Review[]
   created         DateTime         @default(now())
   updated         DateTime         @updatedAt
 }
 
 model Specialization {
-  id          String                 @id @default(uuid())
-  name        String
-  description String?
-  degrees     Degree[]
-  difficulty  Float?
-  courses     Course[]
-  reviews     SpecializationReview[]
-  slug        String                 @unique
-  updatedById String
-  created     DateTime               @default(now())
-  updated     DateTime               @updatedAt
+  id           String        @id @default(uuid())
+  name         String
+  description  String?
+  certificates Certificate[]
+  difficulty   Float?
+  courses      Course[]
+  reviews      Review[]
+  slug         String        @unique
+  created      DateTime      @default(now())
+  updated      DateTime      @updatedAt
 }
 
 model Course {
   id                     String          @id @default(uuid())
   name                   String
-  code                   String
+  code                   String?
   description            String?
   type                   CourseType[]
-  degrees                Degree[]
+  certificates           Certificate[]
   difficulty             Float?
   officialTimeEstimation Float?
   studentTimeEstimation  Float?
   prerequisites          String
   specialization         Specialization? @relation(fields: [specializationId], references: [id])
   specializationId       String?
-  reviews                CourseReview[]
+  reviews                Review[]
   slug                   String          @unique
   created                DateTime        @default(now())
   updated                DateTime        @updatedAt
 }
 
-model SpecializationReview {
-  id               String         @id @default(uuid())
-  rating           Int
-  comment          String?
-  specialization   Specialization @relation(fields: [specializationId], references: [id])
-  specializationId String
-  user             User           @relation(fields: [userId], references: [id])
+model Review {
+  id               String          @id @default(uuid())
+  user             User            @relation(fields: [userId], references: [id])
   userId           String
-  created          DateTime       @default(now())
-  updated          DateTime       @updatedAt
-}
-
-model CourseReview {
-  id       String   @id @default(uuid())
-  rating   Int
-  comment  String?
-  course   Course   @relation(fields: [courseId], references: [id])
-  courseId String
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
-  created  DateTime @default(now())
-  updated  DateTime @updatedAt
+  comment          String?
+  timeTaken        Float?
+  rating           Int
+  difficultyRating Int?
+  instructorRating Int?
+  specialization   Specialization? @relation(fields: [specializationId], references: [id])
+  specializationId String?
+  course           Course?         @relation(fields: [courseId], references: [id])
+  courseId         String?
+  certificate      Certificate?    @relation(fields: [certificateId], references: [id])
+  certificateId    String?
+  created          DateTime        @default(now())
+  updated          DateTime        @updatedAt
 }
