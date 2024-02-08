@@ -24,12 +24,101 @@ export async function create({
       password: hashedPassword,
       role: role || UserRole.STUDENT,
     },
+    select: {
+      id: true,
+      password: false,
+    },
   });
 }
 
 export async function getById(id: string) {
   return db.user.findUnique({
     where: { id },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      role: true,
+      created: true,
+      updated: true,
+    },
+  });
+}
+
+export async function filter(
+  where: { id?: string; role?: UserRole; query?: string },
+  skip: number = 0,
+  take: number = 10
+) {
+  const builder = [];
+  if (where.id) {
+    builder.push({ id: { equals: where.id } });
+  }
+
+  if (where.role) {
+    builder.push({ role: { equals: where.role } });
+  }
+  if (where.query) {
+    builder.push({
+      OR: [
+        { email: { contains: where.query || "" } },
+        { firstName: { contains: where.query || "" } },
+        { lastName: { contains: where.query || "" } },
+      ],
+    });
+  }
+
+  const [data, total] = await db.$transaction([
+    db.user.findMany({
+      where: {
+        AND: builder,
+      },
+      orderBy: {
+        created: "desc",
+      },
+      skip,
+      take,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        role: true,
+        created: true,
+        updated: true,
+      },
+    }),
+    db.user.count({
+      where: {
+        AND: builder,
+      },
+    }),
+  ]);
+  return { data, total };
+}
+
+export async function update(
+  id: string,
+  data: { firstName: string; lastName: string; email: string; role: UserRole }
+) {
+  return db.user.update({
+    where: { id },
+    data,
+    select: {
+      id: true,
+      password: false,
+    },
+  });
+}
+
+export async function deleteById(id: string) {
+  return db.user.delete({
+    where: { id },
+    select: {
+      id: true,
+      password: false,
+    },
   });
 }
 
