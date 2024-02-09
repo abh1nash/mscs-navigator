@@ -49,11 +49,13 @@ const refresh = () => {
           <CertificateDeleteModal
             v-model="state.showDeleteModal"
             @complete="refresh"
+            @cancel="() => (state.showDeleteModal = false)"
             :certificate="certificate"
           ></CertificateDeleteModal>
           <CertificateEditModal
             v-model="state.showEditModal"
             @complete="refresh"
+            @cancel="() => (state.showEditModal = false)"
             :certificate="certificate"
           ></CertificateEditModal>
         </UDropdown>
