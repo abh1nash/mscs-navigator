@@ -1,13 +1,16 @@
 import { db } from "../prisma";
+import slugify from "slugify";
 
 export async function create(data: {
   name: string;
-  slug: string;
   description?: string;
   difficulty?: number;
 }) {
   return db.specialization.create({
-    data,
+    data: {
+      ...data,
+      slug: slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
+    },
   });
 }
 
@@ -45,7 +48,6 @@ export async function update(
   id: string,
   data: {
     name: string;
-    slug: string;
     description?: string;
     difficulty?: number;
   }
