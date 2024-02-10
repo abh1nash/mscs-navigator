@@ -1,4 +1,5 @@
 import { db } from "../prisma";
+import { CourseType } from "@prisma/client";
 
 export async function create(data: { name: string; description?: string }) {
   return await db.certificate.create({ data });
@@ -53,4 +54,82 @@ export async function filter(
   ]);
 
   return { data, total };
+}
+
+export async function addCourse(
+  certificateId: string,
+  courseId: string,
+  type: CourseType
+) {
+  const certificate = await db.certificate.findUnique({
+    where: { id: certificateId },
+    include: { courses: true },
+  });
+  if (!certificate) {
+    throw new Error("Certificate not found");
+  }
+  const certificateCourses = certificate.courses;
+  if (certificateCourses.find((course) => course.id === courseId)) {
+    throw new Error("Course already added to certificate");
+  }
+  return await db.certificateCourse.create({
+    data: {
+      certificateId,
+      courseId,
+      type,
+    },
+  });
+}
+
+export async function addSpecialization(
+  certificateId: string,
+  specializationId: string,
+  type: CourseType
+) {
+  const specialization = await db.specialization.findUnique({
+    where: { id: specializationId },
+  });
+  if (!specialization) {
+    throw new Error("Specialization not found");
+  }
+  const certificate = await db.certificate.findUnique({
+    where: { id: certificateId },
+    include: { specializations: true },
+  });
+  if (!certificate) {
+    throw new Error("Certificate not found");
+  }
+  if (
+    certificate.specializations.find(
+      (specialization) => specialization.id === specializationId
+    )
+  ) {
+    throw new Error("Specialization already added to certificate");
+  }
+
+  return await db.certificateSpecialization.create({
+    data: {
+      certificateId,
+      specializationId,
+      type,
+    },
+  });
+}
+
+export async function removeCourse(certificateId: string, courseId: string) {
+  return await db.certificateCourse.deleteMany({
+    where: { certificateId, courseId },
+  });
+}
+
+export async function removeSpecialization(
+  certificateId: string,
+  specializationId: string
+) {
+  return await db.certificateSpecialization.deleteMany({
+    where: {
+      certificateId,
+      specializationId,
+    },
+  });
 }

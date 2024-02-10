@@ -84,6 +84,7 @@ model CertificateSpecialization {
   certificateId    String
   specialization   Specialization @relation(fields: [specializationId], references: [id])
   specializationId String
+  type             CourseType
   created          DateTime       @default(now())
   updated          DateTime       @updatedAt
 }
