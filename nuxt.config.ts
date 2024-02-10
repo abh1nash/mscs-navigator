@@ -12,6 +12,11 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  routeRules: {
+    "/portal/**": {
+      ssr: false,
+    },
+  },
   tailwindcss: {
     config: {
       theme: {
