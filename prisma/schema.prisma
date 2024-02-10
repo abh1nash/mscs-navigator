@@ -57,45 +57,65 @@ model ResetToken {
 }
 
 model Certificate {
-  id              String           @id @default(uuid())
+  id              String                      @id @default(uuid())
   name            String
   description     String?
-  specializations Specialization[]
-  courses         Course[]
+  courses         CertificateCourse[]
+  specializations CertificateSpecialization[]
   reviews         Review[]
-  created         DateTime         @default(now())
-  updated         DateTime         @updatedAt
+  created         DateTime                    @default(now())
+  updated         DateTime                    @updatedAt
+}
+
+model CertificateCourse {
+  id            String      @id @default(uuid())
+  certificate   Certificate @relation(fields: [certificateId], references: [id])
+  certificateId String
+  course        Course      @relation(fields: [courseId], references: [id])
+  courseId      String
+  type          CourseType
+  created       DateTime    @default(now())
+  updated       DateTime    @updatedAt
+}
+
+model CertificateSpecialization {
+  id               String         @id @default(uuid())
+  certificate      Certificate    @relation(fields: [certificateId], references: [id])
+  certificateId    String
+  specialization   Specialization @relation(fields: [specializationId], references: [id])
+  specializationId String
+  created          DateTime       @default(now())
+  updated          DateTime       @updatedAt
 }
 
 model Specialization {
-  id           String        @id @default(uuid())
+  id           String                      @id @default(uuid())
   name         String
   description  String?
-  certificates Certificate[]
   difficulty   Float?
   courses      Course[]
+  certificates CertificateSpecialization[]
   reviews      Review[]
-  slug         String        @unique
-  created      DateTime      @default(now())
-  updated      DateTime      @updatedAt
+  slug         String                      @unique
+  created      DateTime                    @default(now())
+  updated      DateTime                    @updatedAt
 }
 
 model Course {
-  id                       String          @id @default(uuid())
+  id                       String              @id @default(uuid())
   name                     String
   code                     String?
   description              String?
-  type                     CourseType[]
-  certificates             Certificate[]
+  certificates             CertificateCourse[]
   officialTimeEstimation   Float?
   officialDifficultyRating Float?
   prerequisites            String
-  specialization           Specialization? @relation(fields: [specializationId], references: [id])
+  specialization           Specialization?     @relation(fields: [specializationId], references: [id])
   specializationId         String?
   reviews                  Review[]
-  slug                     String          @unique
-  created                  DateTime        @default(now())
-  updated                  DateTime        @updatedAt
+  slug                     String              @unique
+  created                  DateTime            @default(now())
+  updated                  DateTime            @updatedAt
 }
 
 model Review {
