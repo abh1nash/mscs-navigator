@@ -6,7 +6,7 @@ export async function create(data: {
   description?: string;
   difficulty?: number;
 }) {
-  return db.specialization.create({
+  return await db.specialization.create({
     data: {
       ...data,
       slug: slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
@@ -15,7 +15,7 @@ export async function create(data: {
 }
 
 export async function getById(id: string) {
-  return db.specialization.findUnique({
+  return await db.specialization.findUnique({
     where: { id },
     select: {
       id: true,
@@ -30,7 +30,7 @@ export async function getById(id: string) {
 }
 
 export async function getBySlug(slug: string) {
-  return db.specialization.findUnique({
+  return await db.specialization.findUnique({
     where: { slug },
     select: {
       id: true,
@@ -52,9 +52,9 @@ export async function update(
     difficulty?: number;
   }
 ) {
-  return db.specialization.update({ where: { id }, data });
+  return await db.specialization.update({ where: { id }, data });
 }
 
 export async function deleteById(id: string) {
-  return db.specialization.delete({ where: { id } });
+  return await db.specialization.delete({ where: { id } });
 }

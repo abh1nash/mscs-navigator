@@ -10,7 +10,7 @@ export async function create(data: {
   description?: string;
   difficulty?: number;
 }) {
-  return db.course.create({
+  return await db.course.create({
     data: {
       ...data,
       slug: slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
@@ -19,7 +19,7 @@ export async function create(data: {
 }
 
 export async function getById(id: string) {
-  return db.course.findUnique({
+  return await db.course.findUnique({
     where: { id },
     select: {
       id: true,
@@ -38,7 +38,7 @@ export async function getById(id: string) {
 }
 
 export async function getBySlug(slug: string) {
-  return db.course.findUnique({
+  return await db.course.findUnique({
     where: { slug },
     select: {
       id: true,
@@ -67,7 +67,7 @@ export async function update(
     difficulty?: number;
   }
 ) {
-  return db.course.update({
+  return await db.course.update({
     where: { id },
     data: {
       ...data,
@@ -77,5 +77,5 @@ export async function update(
 }
 
 export async function deleteById(id: string) {
-  return db.course.delete({ where: { id } });
+  return await db.course.delete({ where: { id } });
 }
