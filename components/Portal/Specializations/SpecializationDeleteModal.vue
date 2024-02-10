@@ -13,7 +13,7 @@ const toast = useToast();
 const onDelete = async () => {
   try {
     isLoading.value = true;
-    await $fetch(`/api/specializatiopns/${props.specialization.slug}`, {
+    await $fetch(`/api/specializations/${props.specialization.slug}`, {
       method: "DELETE",
     });
     emit("complete");
