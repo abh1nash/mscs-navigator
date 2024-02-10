@@ -119,6 +119,30 @@ const tabs = [
             ></button>
           </div>
         </div>
+        <div class="grid grid-cols-3 gap-4" v-if="item.key == 'courses'">
+          <CertificateCourseCard
+            v-if="certificateRequest.data.value"
+            v-for="{ id, course } in certificateRequest.data.value?.courses"
+            :key="id"
+            :course="course"
+            :certificate="certificateRequest.data.value"
+          ></CertificateCourseCard>
+          <div
+            class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
+          >
+            <div class="text-center">
+              <div>
+                <UIcon name="i-heroicons-plus" class="size-8"></UIcon>
+              </div>
+              <div aria-hidden="true">Add Course</div>
+            </div>
+            <button
+              @click="ui.addCourseModal = true"
+              class="absolute inset-0"
+              aria-label="Add Specialization"
+            ></button>
+          </div>
+        </div>
       </template>
     </UTabs>
     <CertificateAddSpecializationModal
@@ -133,5 +157,17 @@ const tabs = [
       "
       @cancel="ui.addSpecializationModal = false"
     ></CertificateAddSpecializationModal>
+    <CertificateAddCourseModal
+      v-if="certificateRequest.data.value"
+      :certificate="certificateRequest.data.value"
+      v-model="ui.addCourseModal"
+      @complete="
+        () => {
+          certificateRequest.refresh();
+          ui.addCourseModal = false;
+        }
+      "
+      @cancel="ui.addCourseModal = false"
+    ></CertificateAddCourseModal>
   </UContainer>
 </template>
