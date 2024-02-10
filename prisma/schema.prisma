@@ -110,7 +110,7 @@ model Course {
   certificates             CertificateCourse[]
   officialTimeEstimation   Float?
   officialDifficultyRating Float?
-  prerequisites            String
+  prerequisites            String?
   specialization           Specialization?     @relation(fields: [specializationId], references: [id])
   specializationId         String?
   reviews                  Review[]
