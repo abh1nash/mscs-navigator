@@ -44,6 +44,49 @@ export async function getBySlug(slug: string) {
   });
 }
 
+export async function filter(
+  where: { query?: string; certificateId?: string },
+  skip: number = 0,
+  take: number = 10
+) {
+  const builder = [];
+
+  if (where.query) {
+    builder.push({
+      OR: [
+        { name: { contains: where.query } },
+        { description: { contains: where.query } },
+      ],
+    });
+  }
+
+  if (where.certificateId) {
+    builder.push({
+      certificates: {
+        some: {
+          id: where.certificateId,
+        },
+      },
+    });
+  }
+
+  const [data, total] = await db.$transaction([
+    db.specialization.findMany({
+      where: {
+        AND: builder,
+      },
+      orderBy: {
+        created: "desc",
+      },
+      skip,
+      take,
+    }),
+    db.specialization.count({ where: { AND: builder } }),
+  ]);
+
+  return { data, total };
+}
+
 export async function update(
   id: string,
   data: {
