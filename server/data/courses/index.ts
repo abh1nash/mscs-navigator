@@ -1,8 +1,8 @@
 import { db } from "../prisma";
+import slugify from "slugify";
 
 export async function create(data: {
   name: string;
-  slug: string;
   code?: string;
   prerequisites?: string;
   officialTimeEstimation?: number;
@@ -11,7 +11,10 @@ export async function create(data: {
   difficulty?: number;
 }) {
   return db.course.create({
-    data,
+    data: {
+      ...data,
+      slug: slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
+    },
   });
 }
 
@@ -56,7 +59,6 @@ export async function update(
   id: string,
   data: {
     name: string;
-    slug: string;
     code?: string;
     prerequisites?: string;
     officialTimeEstimation?: number;
@@ -65,7 +67,13 @@ export async function update(
     difficulty?: number;
   }
 ) {
-  return db.course.update({ where: { id }, data });
+  return db.course.update({
+    where: { id },
+    data: {
+      ...data,
+      slug: slugify(data.name, { lower: true, remove: /[*+~.()'"!:@]/g }),
+    },
+  });
 }
 
 export async function deleteById(id: string) {
