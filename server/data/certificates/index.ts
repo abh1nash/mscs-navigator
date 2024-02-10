@@ -17,7 +17,21 @@ export async function deleteById(id: string) {
 }
 
 export async function getById(id: string) {
-  return await db.certificate.findUnique({ where: { id } });
+  return await db.certificate.findUnique({
+    where: { id },
+    include: {
+      courses: {
+        include: {
+          course: true,
+        },
+      },
+      specializations: {
+        include: {
+          specialization: true,
+        },
+      },
+    },
+  });
 }
 
 export async function filter(
@@ -68,10 +82,18 @@ export async function addCourse(
   if (!certificate) {
     throw new Error("Certificate not found");
   }
-  const certificateCourses = certificate.courses;
-  if (certificateCourses.find((course) => course.id === courseId)) {
+
+  const existingEntry = await db.certificateCourse.findFirst({
+    where: {
+      certificateId,
+      courseId,
+    },
+  });
+
+  if (existingEntry) {
     throw new Error("Course already added to certificate");
   }
+
   return await db.certificateCourse.create({
     data: {
       certificateId,
@@ -99,11 +121,14 @@ export async function addSpecialization(
   if (!certificate) {
     throw new Error("Certificate not found");
   }
-  if (
-    certificate.specializations.find(
-      (specialization) => specialization.id === specializationId
-    )
-  ) {
+
+  const existingEntry = await db.certificateSpecialization.findFirst({
+    where: {
+      certificateId,
+      specializationId,
+    },
+  });
+  if (existingEntry) {
     throw new Error("Specialization already added to certificate");
   }
 

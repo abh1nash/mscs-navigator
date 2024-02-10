@@ -9,21 +9,24 @@ const { id } = useRoute().params;
 const ui = reactive({
   editCertificateModal: false,
   deleteCertificateModal: false,
+  addSpecializationModal: false,
+  addCourseModal: false,
 });
 
 const certificateRequest = await useFetch(`/api/certificates/${id}`, {
   method: "GET",
+  key: `certificate-${id}`,
 });
 
 const tabs = [
   {
-    key: "Specializations",
+    key: "specializations",
     label: "Specializations",
     description:
       "All the specializations that are associated with this certificate",
   },
   {
-    key: "Courses",
+    key: "courses",
     label: "Courses",
     description:
       "Courses that are part of the certificate but not of any specialization",
@@ -86,6 +89,49 @@ const tabs = [
         </div>
       </div>
     </div>
-    <UTabs :items="tabs" class="w-full"></UTabs>
+    <UTabs :items="tabs" class="w-full">
+      <template #item="{ item }">
+        <div
+          class="grid grid-cols-3 gap-4"
+          v-if="item.key == 'specializations'"
+        >
+          <CertificateSpecializationCard
+            v-if="certificateRequest.data.value"
+            v-for="{ id, specialization } in certificateRequest.data.value
+              ?.specializations"
+            :key="id"
+            :specialization="specialization"
+            :certificate="certificateRequest.data.value"
+          ></CertificateSpecializationCard>
+          <div
+            class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
+          >
+            <div class="text-center">
+              <div>
+                <UIcon name="i-heroicons-plus" class="size-8"></UIcon>
+              </div>
+              <div aria-hidden="true">Add Specialization</div>
+            </div>
+            <button
+              @click="ui.addSpecializationModal = true"
+              class="absolute inset-0"
+              aria-label="Add Specialization"
+            ></button>
+          </div>
+        </div>
+      </template>
+    </UTabs>
+    <CertificateAddSpecializationModal
+      v-if="certificateRequest.data.value"
+      :certificate="certificateRequest.data.value"
+      v-model="ui.addSpecializationModal"
+      @complete="
+        () => {
+          certificateRequest.refresh();
+          ui.addSpecializationModal = false;
+        }
+      "
+      @cancel="ui.addSpecializationModal = false"
+    ></CertificateAddSpecializationModal>
   </UContainer>
 </template>
