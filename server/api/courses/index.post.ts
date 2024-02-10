@@ -19,15 +19,6 @@ const bodySchema = z.object({
 });
 
 export default defineEventHandler(async (event) => {
-  const slug = getRouterParam(event, "slug");
-
-  if (!slug) {
-    throw createError({
-      status: 400,
-      message: "Missing slug",
-    });
-  }
-
   const user = event.context.user;
 
   if (!user) {
