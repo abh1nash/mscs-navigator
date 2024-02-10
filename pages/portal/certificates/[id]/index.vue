@@ -43,6 +43,11 @@ const tabs = [
             icon="i-heroicons-pencil"
             >Edit</UButton
           >
+          <div class="px-3">
+            <AppLoaderSpin
+              :loading="certificateRequest.pending.value"
+            ></AppLoaderSpin>
+          </div>
           <div class="flex-1"></div>
           <UButton
             @click="ui.deleteCertificateModal = true"

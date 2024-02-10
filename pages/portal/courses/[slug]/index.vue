@@ -24,6 +24,11 @@ const ui = reactive({
           <UButton @click="ui.showEditModal = true" icon="i-heroicons-pencil"
             >Edit</UButton
           >
+          <div class="px-3">
+            <AppLoaderSpin
+              :loading="courseRequest.pending.value"
+            ></AppLoaderSpin>
+          </div>
           <div class="flex-1"></div>
           <UButton
             @click="ui.showDeleteModal = true"

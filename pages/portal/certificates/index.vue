@@ -41,6 +41,11 @@ const state = reactive({
           @cancel="state.addCertificateModal = false"
         ></CertificateAddModal>
       </div>
+      <div class="px-3">
+        <AppLoaderSpin
+          :loading="certificatesRequest.pending.value"
+        ></AppLoaderSpin>
+      </div>
       <div class="flex-1"></div>
       <div class="flex items-center space-x-2">
         <UInput

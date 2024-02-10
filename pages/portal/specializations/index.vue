@@ -38,6 +38,11 @@ const ui = reactive({
           @cancel="() => (ui.showAddModal = false)"
         ></SpecializationAddModal>
       </div>
+      <div class="px-3">
+        <AppLoaderSpin
+          :loading="specializationsRequest.pending.value"
+        ></AppLoaderSpin>
+      </div>
       <div class="flex-1"></div>
       <div class="flex items-center space-x-2">
         <UInput

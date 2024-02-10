@@ -19,6 +19,11 @@ const specializationRequest = await useFetch(`/api/specializations/${slug}`, {
             {{ specializationRequest.data.value?.name }}
           </div>
           <UButton icon="i-heroicons-pencil">Edit</UButton>
+          <div class="px-3">
+            <AppLoaderSpin
+              :loading="specializationRequest.pending.value"
+            ></AppLoaderSpin>
+          </div>
           <div class="flex-1"></div>
           <UButton variant="ghost" color="red" icon="i-heroicons-trash">
             <span class="sr-only"> Delete </span>
