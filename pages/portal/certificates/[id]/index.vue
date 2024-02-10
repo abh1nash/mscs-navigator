@@ -11,7 +11,7 @@ const ui = reactive({
   deleteCertificateModal: false,
 });
 
-const certificateRequest = await useLazyFetch(`/api/certificates/${id}`, {
+const certificateRequest = await useFetch(`/api/certificates/${id}`, {
   method: "GET",
 });
 
