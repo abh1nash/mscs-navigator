@@ -36,9 +36,18 @@ const refresh = () => {
 };
 </script>
 <template>
-  <UCard>
+  <UCard class="hover:ring-primary-500 relative">
+    <NuxtLink
+      :to="{
+        name: 'CertificateDetailsPortal',
+        params: { id: certificate.id },
+      }"
+      :aria-label="certificate.name"
+    >
+      <span class="absolute inset-0" aria-hidden="true"></span>
+    </NuxtLink>
     <div class="flex items-center justify-between">
-      <div class="text-xl font-bold">{{ props.certificate.name }}</div>
+      <div class="text-xl font-bold">{{ certificate.name }}</div>
       <div class="flex items-center space-x-2">
         <UDropdown :items="items(certificate)">
           <UButton
@@ -61,6 +70,6 @@ const refresh = () => {
         </UDropdown>
       </div>
     </div>
-    <div class="text-gray-500">{{ props.certificate.description }}</div>
+    <div class="text-gray-500">{{ certificate.description }}</div>
   </UCard>
 </template>
