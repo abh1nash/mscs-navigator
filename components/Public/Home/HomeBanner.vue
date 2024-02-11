@@ -11,7 +11,7 @@
 <style scoped>
 .cu-banner {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("~/cu-aerial-crop.jpg");
+    url("/cu-aerial-crop.jpg");
   background-size: cover;
 }
 </style>
