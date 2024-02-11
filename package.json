@@ -7,8 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "prisma:inline": "cp ./node_modules/.prisma/client/*.js ./node_modules/@prisma/client",
-    "postinstall": "nuxt prepare && prisma generate && npm run prisma:inline"
+    "postinstall": "nuxt prepare && prisma generate"
   },
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.0",
