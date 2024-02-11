@@ -13,7 +13,7 @@ const searchRequest = await useFetch("/api/public/search", {
     <HomeBanner></HomeBanner>
     <div class="grid grid-cols-12 flex-1">
       <div
-        class="col-span-3 px-4 sticky top-10 max-h-lvh py-8 overflow-auto border-r"
+        class="col-span-3 px-4 sticky top-10 max-h-lvh py-8 overflow-auto border-r dark:border-gray-900/25"
       >
         <ClientOnly>
           <HomeFilters></HomeFilters>

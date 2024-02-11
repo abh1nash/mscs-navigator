@@ -15,6 +15,9 @@ export default defineNuxtConfig({
     "/portal/**": {
       ssr: false,
     },
+    "**": {
+      ssr: false,
+    },
   },
   vite: {
     resolve: {
