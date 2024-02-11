@@ -114,9 +114,20 @@ model Course {
   specialization           Specialization?     @relation(fields: [specializationId], references: [id])
   specializationId         String?
   reviews                  Review[]
+  modules                  Module[]
   slug                     String              @unique
   created                  DateTime            @default(now())
   updated                  DateTime            @updatedAt
+}
+
+model Module {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  course      Course   @relation(fields: [courseId], references: [id])
+  courseId    String
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
 }
 
 model Review {

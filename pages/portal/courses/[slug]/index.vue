@@ -6,11 +6,14 @@ definePageMeta({
 
 const { slug } = useRoute().params;
 
-const courseRequest = await useFetch(`/api/courses/${slug}`);
+const courseRequest = await useFetch(`/api/courses/${slug}`, {
+  key: `course-${slug}`,
+});
 
 const ui = reactive({
   showEditModal: false,
   showDeleteModal: false,
+  addModuleModal: false,
 });
 </script>
 <template>
@@ -67,6 +70,42 @@ const ui = reactive({
           {{ courseRequest.data.value?.description }}
         </div>
       </div>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <div
+        class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
+      >
+        <div class="text-center">
+          <div>
+            <UIcon name="i-heroicons-plus" class="size-8"></UIcon>
+          </div>
+          <div aria-hidden="true">Add Module</div>
+        </div>
+        <button
+          @click="ui.addModuleModal = true"
+          class="absolute inset-0"
+          aria-label="Add Module"
+        ></button>
+        <CourseModuleAddModal
+          v-if="courseRequest.data.value"
+          :course="courseRequest.data.value"
+          v-model="ui.addModuleModal"
+          @complete="
+            () => {
+              courseRequest.refresh();
+              ui.addModuleModal = false;
+            }
+          "
+          @cancel="ui.addModuleModal = false"
+        ></CourseModuleAddModal>
+      </div>
+      <CourseModuleCard
+        v-if="courseRequest.data.value"
+        v-for="module in courseRequest.data.value?.modules"
+        :key="module.id"
+        :course="courseRequest.data.value"
+        :module="module"
+      ></CourseModuleCard>
     </div>
   </UContainer>
 </template>

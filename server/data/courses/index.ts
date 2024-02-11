@@ -49,6 +49,7 @@ export async function getBySlug(slug: string) {
       officialDifficultyRating: true,
       specialization: true,
       certificates: true,
+      modules: true,
       created: true,
       updated: true,
     },
