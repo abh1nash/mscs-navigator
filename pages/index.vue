@@ -2,11 +2,11 @@
 definePageMeta({
   name: "Home",
 });
-// const route = useRoute();
-// const query = computed(() => route.query);
-// const searchRequest = await useFetch("/api/public/search", {
-//   query,
-// });
+const route = useRoute();
+const query = computed(() => route.query);
+const searchRequest = await useFetch("/api/public/search", {
+  query,
+});
 </script>
 <template>
   <div class="flex flex-col min-h-svh">
@@ -20,7 +20,7 @@ definePageMeta({
         </ClientOnly>
       </div>
       <div class="col-span-9 px-4 py-6">
-        <!-- <UContainer>
+        <UContainer>
           <div class="mb-4">
             <div class="flex items-center gap-2 h-12">
               <div>
@@ -41,7 +41,7 @@ definePageMeta({
               </div>
             </UCard>
           </div>
-        </UContainer> -->
+        </UContainer>
       </div>
     </div>
   </div>
