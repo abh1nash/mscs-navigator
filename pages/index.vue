@@ -10,7 +10,7 @@ const searchRequest = await useFetch("/api/public/search", {
 </script>
 <template>
   <div class="flex flex-col min-h-svh">
-    <HomeBanner></HomeBanner>
+    <!-- <HomeBanner></HomeBanner> -->
     <div class="grid grid-cols-12 flex-1">
       <div
         class="col-span-3 px-4 sticky top-10 max-h-lvh py-8 overflow-auto border-r"
