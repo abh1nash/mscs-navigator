@@ -8,6 +8,11 @@ const { slug } = useRoute().params;
 
 const specializationRequest = await useFetch(`/api/specializations/${slug}`, {
   method: "GET",
+  key: `specialization-${slug}`,
+});
+
+const ui = reactive({
+  addCourseModal: false,
 });
 </script>
 <template>
@@ -32,6 +37,42 @@ const specializationRequest = await useFetch(`/api/specializations/${slug}`, {
         <div class="text-gray-500 mt-2 max-w-lg text-sm">
           {{ specializationRequest.data.value?.description }}
         </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <SpecializationCourseCard
+        v-if="specializationRequest.data.value"
+        v-for="course in specializationRequest.data.value?.courses"
+        :key="course.id"
+        :specialization="specializationRequest.data.value"
+        :course="course"
+      ></SpecializationCourseCard>
+      <div
+        class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
+      >
+        <div class="text-center">
+          <div>
+            <UIcon name="i-heroicons-plus" class="size-8"></UIcon>
+          </div>
+          <div aria-hidden="true">Add Course</div>
+        </div>
+        <button
+          @click="ui.addCourseModal = true"
+          class="absolute inset-0"
+          aria-label="Add Specialization"
+        ></button>
+        <SpecializationAddCourseModal
+          v-if="specializationRequest.data.value"
+          :specialization="specializationRequest.data.value"
+          v-model="ui.addCourseModal"
+          @complete="
+            () => {
+              specializationRequest.refresh();
+              ui.addCourseModal = false;
+            }
+          "
+          @cancel="ui.addCourseModal = false"
+        ></SpecializationAddCourseModal>
       </div>
     </div>
   </UContainer>

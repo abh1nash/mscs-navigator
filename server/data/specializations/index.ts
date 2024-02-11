@@ -87,6 +87,32 @@ export async function filter(
   return { data, total };
 }
 
+export async function addCourse(specializationId: string, courseId: string) {
+  return await db.specialization.update({
+    where: { id: specializationId },
+    data: {
+      courses: {
+        connect: {
+          id: courseId,
+        },
+      },
+    },
+  });
+}
+
+export async function removeCourse(specializationId: string, courseId: string) {
+  return await db.specialization.update({
+    where: { id: specializationId },
+    data: {
+      courses: {
+        disconnect: {
+          id: courseId,
+        },
+      },
+    },
+  });
+}
+
 export async function update(
   id: string,
   data: {
