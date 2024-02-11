@@ -1,8 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@vue-email/nuxt"],
-  build: { transpile: ["@pluink/node"] },
+  modules: ["@nuxt/ui", "@vue-email/nuxt", "@vueuse/nuxt"],
   appConfig: {
     plunkAPIKey: process.env.PLUNK_API_KEY,
   },
