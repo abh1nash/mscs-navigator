@@ -2,15 +2,15 @@
 definePageMeta({
   name: "Home",
 });
-const route = useRoute();
-const query = computed(() => route.query);
-const searchRequest = await useFetch("/api/public/search", {
-  query,
-});
+// const route = useRoute();
+// const query = computed(() => route.query);
+// const searchRequest = await useFetch("/api/public/search", {
+//   query,
+// });
 </script>
 <template>
   <div class="flex flex-col min-h-svh">
-    <!-- <HomeBanner></HomeBanner> -->
+    <HomeBanner></HomeBanner>
     <div class="grid grid-cols-12 flex-1">
       <div
         class="col-span-3 px-4 sticky top-10 max-h-lvh py-8 overflow-auto border-r"
@@ -20,7 +20,7 @@ const searchRequest = await useFetch("/api/public/search", {
         </ClientOnly>
       </div>
       <div class="col-span-9 px-4 py-6">
-        <UContainer>
+        <!-- <UContainer>
           <div class="mb-4">
             <div class="flex items-center gap-2 h-12">
               <div>
@@ -41,7 +41,7 @@ const searchRequest = await useFetch("/api/public/search", {
               </div>
             </UCard>
           </div>
-        </UContainer>
+        </UContainer> -->
       </div>
     </div>
   </div>
