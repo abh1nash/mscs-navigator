@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from "#ui/types";
-import { CourseType } from "@prisma/client";
 
 const props = defineProps<{ certificate: { id: string } }>();
 
@@ -77,7 +76,13 @@ async function onSubmit(event: FormSubmitEvent<{ specializationId: string }>) {
           <UFormGroup label="Type" required name="type">
             <USelect
               :options="
-                Object.values(CourseType).map((type) => ({
+                [
+                  'PATHWAY',
+                  'BREADTH',
+                  'ELECTIVE',
+                  'OUTSIDE_ELECTIVE',
+                  'OTHER',
+                ].map((type) => ({
                   label: type,
                   value: type,
                 }))

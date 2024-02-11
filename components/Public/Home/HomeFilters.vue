@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { CourseType } from "@prisma/client";
-
 const filterOptionsRequest = await useFetch("/api/public/filter-options");
 
 const query = useRoute().query;
 
 const courseTypeOptions = [
   { label: "All", value: "ALL" },
-  { label: "Pathway", value: CourseType.PATHWAY },
-  { label: "Breadth", value: CourseType.BREADTH },
-  { label: "Elective", value: CourseType.ELECTIVE },
-  { label: "Outside Elective", value: CourseType.OUTSIDE_ELECTIVE },
-  { label: "Other", value: CourseType.OTHER },
+  { label: "Pathway", value: "PATHWAY" },
+  { label: "Breadth", value: "BREADTH" },
+  { label: "Elective", value: "ELECTIVE" },
+  { label: "Outside Elective", value: "OUTSIDE_ELECTIVE" },
+  { label: "Other", value: "OTHER" },
 ];
 
 const state = reactive({
   query: query.query as string,
   certificate: query.certificate as string,
-  type: (query.type as CourseType | "ALL") || "ALL",
+  type: (query.type as string | "ALL") || "ALL",
   timeMin: parseInt(query.timeMin as string) || undefined,
   timeMax: parseInt(query.timeMax as string) || undefined,
   officialDifficultyRating:
