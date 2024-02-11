@@ -95,14 +95,6 @@ const tabs = [
           class="grid grid-cols-3 gap-4"
           v-if="item.key == 'specializations'"
         >
-          <CertificateSpecializationCard
-            v-if="certificateRequest.data.value"
-            v-for="{ id, specialization } in certificateRequest.data.value
-              ?.specializations"
-            :key="id"
-            :specialization="specialization"
-            :certificate="certificateRequest.data.value"
-          ></CertificateSpecializationCard>
           <div
             class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
           >
@@ -118,15 +110,16 @@ const tabs = [
               aria-label="Add Specialization"
             ></button>
           </div>
+          <CertificateSpecializationCard
+            v-if="certificateRequest.data.value"
+            v-for="{ id, specialization } in certificateRequest.data.value
+              ?.specializations"
+            :key="id"
+            :specialization="specialization"
+            :certificate="certificateRequest.data.value"
+          ></CertificateSpecializationCard>
         </div>
         <div class="grid grid-cols-3 gap-4" v-if="item.key == 'courses'">
-          <CertificateCourseCard
-            v-if="certificateRequest.data.value"
-            v-for="{ id, course } in certificateRequest.data.value?.courses"
-            :key="id"
-            :course="course"
-            :certificate="certificateRequest.data.value"
-          ></CertificateCourseCard>
           <div
             class="min-h-24 relative bg-gray-50 hover:bg-gray-100 text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-800 rounded-lg border border-dashed flex items-center justify-center"
           >
@@ -142,6 +135,13 @@ const tabs = [
               aria-label="Add Specialization"
             ></button>
           </div>
+          <CertificateCourseCard
+            v-if="certificateRequest.data.value"
+            v-for="{ id, course } in certificateRequest.data.value?.courses"
+            :key="id"
+            :course="course"
+            :certificate="certificateRequest.data.value"
+          ></CertificateCourseCard>
         </div>
       </template>
     </UTabs>
