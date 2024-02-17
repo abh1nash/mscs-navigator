@@ -6,7 +6,7 @@ export async function create(userId: string) {
     where: { userId },
   });
   if (prevTokens.length > 0) {
-    db.resetToken.deleteMany({
+    await db.resetToken.deleteMany({
       where: { userId },
     });
   }
