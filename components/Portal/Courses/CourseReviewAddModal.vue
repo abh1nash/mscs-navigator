@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { z } from "zod";
+import type { FormSubmitEvent } from "#ui/types";
+
 const props = defineProps<{
   course: {
     name: string;
@@ -26,7 +28,27 @@ const state = reactive({
   timeTaken: 0,
   comment: "",
 });
-const onSubmit = () => {};
+const toast = useToast();
+const isLoading = ref(false);
+const onSubmit = async (event: FormSubmitEvent<typeof schema>) => {
+  try {
+    isLoading.value = true;
+    await $fetch(`/api/courses/${props.course.slug}/reviews`, {
+      method: "POST",
+      body: JSON.stringify(event.data),
+    });
+    emit("complete");
+  } catch (err: any) {
+    toast.add({
+      title: "Error",
+      description: err.data?.message || "Cannot add review",
+      icon: "i-heroicons-x-circle-20-solid",
+      color: "red",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
 </script>
 <template>
   <UModal>
@@ -62,8 +84,13 @@ const onSubmit = () => {};
           <UTextarea resize v-model="state.comment"></UTextarea>
         </UFormGroup>
         <div class="flex gap-2">
-          <UButton type="submit"> Add Review </UButton>
-          <UButton type="button" variant="ghost" @click="emit('cancel')">
+          <UButton :loading="isLoading" type="submit"> Add Review </UButton>
+          <UButton
+            :disabled="isLoading"
+            type="button"
+            variant="ghost"
+            @click="emit('cancel')"
+          >
             Cancel
           </UButton>
         </div>

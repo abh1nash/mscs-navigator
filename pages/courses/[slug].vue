@@ -4,8 +4,18 @@ definePageMeta({
 });
 
 const slug = useRoute().params.slug;
-
-const { data, error } = await useFetch(`/api/public/courses/${slug}`);
+const ui = reactive({
+  showAddReviewModal: false,
+});
+const reviewQuery = reactive({
+  page: 1,
+  limit: 10,
+});
+const { data, error, refresh } = await useFetch(`/api/courses/${slug}`);
+const reviewRequest = await useFetch(`/api/courses/${slug}/reviews`, {
+  key: `course-${slug}-reviews`,
+  query: reviewQuery,
+});
 
 if (error.value) {
   throw createError({
@@ -25,10 +35,6 @@ const modules = computed(() => {
 });
 
 const user = useUser();
-
-const ui = reactive({
-  showAddReviewModal: false,
-});
 </script>
 <template>
   <div>
@@ -83,9 +89,12 @@ const ui = reactive({
                   <UIcon name="i-heroicons-star"></UIcon>
                 </div>
                 <div class="flex-1">
-                  <div class="font-bold text-xs">Overall Rating</div>
+                  <div class="font-bold text-xs">Average Rating</div>
                   <div>
-                    <AppRating :model-value="1.4" read-only></AppRating>
+                    <AppRating
+                      :model-value="data?.avgRating || 0"
+                      read-only
+                    ></AppRating>
                   </div>
                 </div>
               </div>
@@ -98,7 +107,10 @@ const ui = reactive({
                 <div class="flex-1">
                   <div class="font-bold text-xs">Instructor Effectiveness</div>
                   <div>
-                    <AppRating :model-value="2.4" read-only></AppRating>
+                    <AppRating
+                      :model-value="data?.avgInstructorRating || 0"
+                      read-only
+                    ></AppRating>
                   </div>
                 </div>
               </div>
@@ -111,7 +123,10 @@ const ui = reactive({
                 <div class="flex-1">
                   <div class="font-bold text-xs">Difficulty</div>
                   <div>
-                    <AppRating :model-value="3.8" read-only></AppRating>
+                    <AppRating
+                      :model-value="data?.avgDifficultyRating || 0"
+                      read-only
+                    ></AppRating>
                   </div>
                 </div>
               </div>
@@ -154,18 +169,24 @@ const ui = reactive({
             <CourseReviewAddModal
               v-model="ui.showAddReviewModal"
               @cancel="() => (ui.showAddReviewModal = false)"
+              @complete="
+                () => {
+                  reviewRequest.refresh();
+                  refresh();
+                  ui.showAddReviewModal = false;
+                }
+              "
               :course="data!"
             ></CourseReviewAddModal>
           </ClientOnly>
+          <AppLoaderSpin :loading="reviewRequest.pending.value"></AppLoaderSpin>
         </div>
         <div class="grid gap-4">
-          <UCard>
-            <AppRating :model-value="3.4" class="mb-2"></AppRating>
-            <div class="font-bold">Andrew S.</div>
-            <div class="text-sm">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Distinctio nisi, veniam architecto voluptates earum facere et
-              magnam accusantium fugiat placeat?
+          <UCard v-for="review in reviewRequest.data.value?.results">
+            <AppRating :model-value="review.rating" class="mb-2"></AppRating>
+            <div class="font-bold">{{ review.user.name }}</div>
+            <div class="text-sm" v-if="review.comment">
+              {{ review.comment }}
             </div>
           </UCard>
         </div>

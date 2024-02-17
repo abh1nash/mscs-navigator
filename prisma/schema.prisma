@@ -112,6 +112,10 @@ model Course {
   officialTimeEstimation   Float?
   officialDifficultyRating Float?
   prerequisites            String?
+  avgRating                Float?
+  avgDifficultyRating      Float?
+  avgInstructorRating      Float?
+  avgTimeTaken             Float?
   specialization           Specialization?     @relation(fields: [specializationId], references: [id])
   specializationId         String?
   reviews                  Review[]
