@@ -7,8 +7,10 @@ const { y } = useWindowScroll();
 const user = useUser();
 
 onMounted(async () => {
-  const result = await $fetch("/api/users/me");
-  user.value = result;
+  try {
+    const result = await $fetch("/api/users/me");
+    user.value = result;
+  } catch {}
 });
 </script>
 <template>
