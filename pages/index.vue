@@ -35,7 +35,16 @@ const searchRequest = await useFetch("/api/public/search", {
             </div>
           </div>
           <div class="grid grid-cols-3 gap-4">
-            <UCard v-for="result in searchRequest.data.value?.results">
+            <UCard
+              v-for="result in searchRequest.data.value?.results"
+              :key="result.slug"
+              class="relative hover:ring-primary-500"
+            >
+              <NuxtLink
+                :to="{ name: 'CourseDetails', params: { slug: result.slug } }"
+                class="absolute inset-0"
+                :aria-label="result.name"
+              ></NuxtLink>
               <div class="font-bold">
                 {{ result.name }}
               </div>
