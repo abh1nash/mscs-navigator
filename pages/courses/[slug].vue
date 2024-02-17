@@ -68,7 +68,11 @@ const user = useUser();
                 </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Official Time</div>
-                  <div>{{ data?.officialTimeEstimation }} hours</div>
+                  <div>
+                    {{ data?.officialTimeEstimation }} hour{{
+                      data?.officialTimeEstimation == 1 ? "" : "s"
+                    }}
+                  </div>
                 </div>
               </div>
               <div class="flex gap-2">
@@ -78,8 +82,13 @@ const user = useUser();
                   <UIcon name="i-heroicons-user-group"></UIcon>
                 </div>
                 <div class="flex-1">
-                  <div class="font-bold text-xs">Students Time</div>
-                  <div>12 hours</div>
+                  <div class="font-bold text-xs">Students Time Taken</div>
+                  <div v-if="data?.avgTimeTaken">
+                    {{ data?.avgTimeTaken }} hour{{
+                      data?.avgTimeTaken == 1 ? "" : "s"
+                    }}
+                  </div>
+                  <div v-else>N/A</div>
                 </div>
               </div>
               <div class="flex gap-2">
@@ -133,13 +142,21 @@ const user = useUser();
             </div>
           </UCard>
           <div class="grid grid-cols-2 gap-6">
-            <div>
-              <h2 class="font-bold">Description</h2>
-              <p>
-                {{ data?.description }}
-              </p>
+            <div class="grid gap-6">
+              <div>
+                <h2 class="font-bold">Description</h2>
+                <p>
+                  {{ data?.description }}
+                </p>
+              </div>
+              <div v-if="data?.prerequisites">
+                <h2 class="font-bold">Prerequisites</h2>
+                <p>
+                  {{ data?.prerequisites }}
+                </p>
+              </div>
             </div>
-            <div>
+            <div v-if="modules.length > 0">
               <h2 class="font-bold">Modules</h2>
               <UAccordion :items="modules">
                 <template #default="{ item }">
