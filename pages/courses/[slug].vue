@@ -25,6 +25,10 @@ const modules = computed(() => {
 });
 
 const user = useUser();
+
+const ui = reactive({
+  showAddReviewModal: false,
+});
 </script>
 <template>
   <div>
@@ -34,7 +38,7 @@ const user = useUser();
           <div class="text-md text-gray-300 tracking-widest">
             {{ data?.code }}
           </div>
-          <h1 class="text-6xl font-bold">
+          <h1 class="text-6xl font-bold max-w-3xl">
             {{ data?.name }}
           </h1>
           <UCard class="my-6 max-w-3xl">
@@ -47,7 +51,7 @@ const user = useUser();
                 </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Final Type</div>
-                  <div>Project</div>
+                  <div>{{ data?.finalType }}</div>
                 </div>
               </div>
               <div class="flex gap-2">
@@ -141,7 +145,17 @@ const user = useUser();
           <h2 class="font-bold text-2xl">Reviews</h2>
 
           <ClientOnly>
-            <UButton v-if="user" icon="i-heroicons-plus">Add Review</UButton>
+            <UButton
+              v-if="user"
+              @click="() => (ui.showAddReviewModal = true)"
+              icon="i-heroicons-plus"
+              >Add Review</UButton
+            >
+            <CourseReviewAddModal
+              v-model="ui.showAddReviewModal"
+              @cancel="() => (ui.showAddReviewModal = false)"
+              :course="data!"
+            ></CourseReviewAddModal>
           </ClientOnly>
         </div>
         <div class="grid gap-4">
