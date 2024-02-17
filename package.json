@@ -13,6 +13,7 @@
     "@lucia-auth/adapter-prisma": "^4.0.0",
     "@nuxt/ui": "^2.13.0",
     "@plunk/node": "^3.0.0",
+    "@vue-email/compiler": "^0.8.12",
     "@vue-email/nuxt": "^0.8.13",
     "@vueuse/nuxt": "^10.7.2",
     "lucia": "^3.0.1",
