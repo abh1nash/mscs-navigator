@@ -1,5 +1,4 @@
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
-import { generateRandomString, alphabet } from "oslo/crypto";
 import { db } from "../prisma";
 
 export async function create(userId: string) {
@@ -12,7 +11,12 @@ export async function create(userId: string) {
     });
   }
 
-  const newToken = generateRandomString(30, alphabet("a-z", "A-Z", "0-9"));
+  const rand = function () {
+    return Math.random().toString(36).substr(2); // remove `0.`
+  };
+
+  // TODO: use a better random generator
+  const newToken = rand() + rand() + rand() + rand();
 
   await db.resetToken.create({
     data: {
