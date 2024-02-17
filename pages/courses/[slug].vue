@@ -7,6 +7,14 @@ const slug = useRoute().params.slug;
 
 const { data, error } = await useFetch(`/api/public/courses/${slug}`);
 
+if (error.value) {
+  throw createError({
+    statusCode: 404,
+    message: error.value.data.message || "Course not found",
+    fatal: true,
+  });
+}
+
 const modules = computed(() => {
   return (
     data.value?.modules.map((module) => ({
@@ -15,6 +23,8 @@ const modules = computed(() => {
     })) || []
   );
 });
+
+const user = useUser();
 </script>
 <template>
   <div>
@@ -27,11 +37,11 @@ const modules = computed(() => {
           <h1 class="text-6xl font-bold">
             {{ data?.name }}
           </h1>
-          <UCard class="my-6">
+          <UCard class="my-6 max-w-3xl">
             <div class="grid grid-cols-3 gap-4">
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-academic-cap"></UIcon>
                 </div>
@@ -42,7 +52,7 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-clock"></UIcon>
                 </div>
@@ -53,7 +63,7 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-user-group"></UIcon>
                 </div>
@@ -64,7 +74,7 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-star"></UIcon>
                 </div>
@@ -77,7 +87,7 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-building-library"></UIcon>
                 </div>
@@ -90,7 +100,7 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                  class="size-10 bg-primary/20 text-primary text-2xl rounded-md flex items-center justify-center"
                 >
                   <UIcon name="i-heroicons-chart-bar"></UIcon>
                 </div>
@@ -126,9 +136,13 @@ const modules = computed(() => {
           </div>
         </UContainer>
       </div>
-      <div class="col-span-4 bg-gray-50 pt-16 px-4">
-        <div class="py-4">
+      <div class="col-span-4 bg-gray-50 dark:bg-gray-950 pt-16 px-4">
+        <div class="py-4 flex gap-2">
           <h2 class="font-bold text-2xl">Reviews</h2>
+
+          <ClientOnly>
+            <UButton v-if="user" icon="i-heroicons-plus">Add Review</UButton>
+          </ClientOnly>
         </div>
         <div class="grid gap-4">
           <UCard>

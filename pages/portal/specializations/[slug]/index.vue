@@ -2,6 +2,7 @@
 definePageMeta({
   name: "SpecializationDetailsPortal",
   layout: "portal",
+  middleware: ["auth"],
 });
 
 const { slug } = useRoute().params;

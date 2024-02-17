@@ -3,6 +3,13 @@ const nav = ref<HTMLElement | null>(null);
 
 const { height } = useElementSize(nav);
 const { y } = useWindowScroll();
+
+const user = useUser();
+
+onMounted(async () => {
+  const result = await $fetch("/api/users/me");
+  user.value = result;
+});
 </script>
 <template>
   <div ref="nav" class="h-16 w-full flex items-center bg-black px-4 z-10">
@@ -12,8 +19,13 @@ const { y } = useWindowScroll();
       </NuxtLink>
     </div>
     <div class="flex-1"></div>
-    <div>
-      <UButton :to="{ name: 'Login' }">Portal</UButton>
-    </div>
+    <client-only>
+      <div v-if="user">
+        <UButton :to="{ name: 'Dashboard' }">Portal</UButton>
+      </div>
+      <div v-else>
+        <UButton :to="{ name: 'Login' }">Login</UButton>
+      </div>
+    </client-only>
   </div>
 </template>

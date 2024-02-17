@@ -21,6 +21,14 @@ const pages = [
     to: "/portal/users",
   },
 ];
+const user = useUser();
+const logout = async () => {
+  await $fetch("/api/auth/logout", {
+    method: "POST",
+  });
+  user.value = null;
+  navigateTo({ name: "Home" });
+};
 </script>
 <template>
   <div class="h-lvh flex flex-col bg-black">
@@ -47,6 +55,7 @@ const pages = [
     </div>
     <div class="p-4 text-center">
       <UButton
+        @click="logout"
         variant="ghost"
         icon="i-heroicons-arrow-left-start-on-rectangle"
         class="w-full hover:text-black"

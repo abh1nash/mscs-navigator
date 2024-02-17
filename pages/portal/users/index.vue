@@ -2,6 +2,7 @@
 definePageMeta({
   name: "UsersPortal",
   layout: "portal",
+  middleware: ["auth"],
 });
 
 const queryParams = reactive({

@@ -2,6 +2,7 @@
 definePageMeta({
   name: "CoursesPortal",
   layout: "portal",
+  middleware: ["auth"],
 });
 
 const query = reactive({

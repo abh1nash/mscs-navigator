@@ -6,12 +6,20 @@ definePageMeta({
   name: "Login",
 });
 
-const isLoading = ref(false);
+const user = useUser();
+
+if (user.value) {
+  navigateTo({ name: "Dashboard" }, { replace: true });
+}
+
+const isLoading = ref(true);
 
 const schema = z.object({
   email: z.string().email("Invalid email address."),
   password: z.string().min(1, "Password is required."),
 });
+
+onMounted(() => (isLoading.value = false));
 
 const state = reactive({
   email: undefined,

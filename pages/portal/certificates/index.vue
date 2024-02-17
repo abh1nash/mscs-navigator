@@ -2,6 +2,7 @@
 definePageMeta({
   name: "CertificatesPortal",
   layout: "portal",
+  middleware: ["auth"],
 });
 
 const query = reactive({

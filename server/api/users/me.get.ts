@@ -10,7 +10,5 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const requestUser = await users.getById(user.id);
-
-  return requestUser;
+  return user;
 });

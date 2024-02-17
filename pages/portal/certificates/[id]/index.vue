@@ -2,6 +2,7 @@
 definePageMeta({
   name: "CertificateDetailsPortal",
   layout: "portal",
+  middleware: ["auth"],
 });
 
 const { id } = useRoute().params;
