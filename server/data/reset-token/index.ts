@@ -1,5 +1,5 @@
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
-import { generateId } from "lucia";
+import { generateRandomString, alphabet } from "oslo/crypto";
 import { db } from "../prisma";
 
 export async function create(userId: string) {
@@ -12,7 +12,7 @@ export async function create(userId: string) {
     });
   }
 
-  const newToken = generateId(40);
+  const newToken = generateRandomString(30, alphabet("a-z", "A-Z", "0-9"));
 
   await db.resetToken.create({
     data: {
