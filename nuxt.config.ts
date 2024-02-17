@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui", "@vue-email/nuxt", "@vueuse/nuxt", "nuxt-rating"],
+  build: {
+    transpile: ["nuxt-rating"],
+  },
   appConfig: {
     plunkAPIKey: process.env.PLUNK_API_KEY,
   },
