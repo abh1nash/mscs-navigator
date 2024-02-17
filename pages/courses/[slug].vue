@@ -158,16 +158,18 @@ const user = useUser();
             </div>
             <div v-if="modules.length > 0">
               <h2 class="font-bold">Modules</h2>
-              <UAccordion :items="modules">
-                <template #default="{ item }">
-                  <UButton
-                    variant="ghost"
-                    class="text-left border-b border-primary-100 rounded-none"
-                  >
-                    {{ item.label }}
-                  </UButton>
-                </template>
-              </UAccordion>
+              <ClientOnly>
+                <UAccordion :items="modules">
+                  <template #default="{ item }">
+                    <UButton
+                      variant="ghost"
+                      class="text-left border-b border-primary-100 rounded-none"
+                    >
+                      {{ item.label }}
+                    </UButton>
+                  </template>
+                </UAccordion>
+              </ClientOnly>
             </div>
           </div>
         </UContainer>
