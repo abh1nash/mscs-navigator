@@ -31,8 +31,10 @@ const modules = computed(() => {
             <div class="grid grid-cols-3 gap-4">
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-academic-cap"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Final Type</div>
                   <div>Project</div>
@@ -40,8 +42,10 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-clock"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Official Time</div>
                   <div>{{ data?.officialTimeEstimation }} hours</div>
@@ -49,8 +53,10 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-user-group"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Students Time</div>
                   <div>12 hours</div>
@@ -58,8 +64,10 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-star"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Overall Rating</div>
                   <div>
@@ -69,8 +77,10 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-building-library"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Instructor Effectiveness</div>
                   <div>
@@ -80,8 +90,10 @@ const modules = computed(() => {
               </div>
               <div class="flex gap-2">
                 <div
-                  class="size-10 bg-primary-50 text-primary rounded-md flex items-center justify-center"
-                ></div>
+                  class="size-10 bg-primary-50 text-primary text-2xl rounded-md flex items-center justify-center"
+                >
+                  <UIcon name="i-heroicons-chart-bar"></UIcon>
+                </div>
                 <div class="flex-1">
                   <div class="font-bold text-xs">Difficulty</div>
                   <div>
