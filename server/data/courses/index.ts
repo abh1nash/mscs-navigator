@@ -5,6 +5,7 @@ export async function create(data: {
   name: string;
   code?: string;
   prerequisites?: string;
+  finalType: string;
   officialTimeEstimation?: number;
   officialDifficultyRating?: number;
   description?: string;
@@ -25,6 +26,8 @@ export async function getById(id: string) {
       id: true,
       name: true,
       slug: true,
+      code: true,
+      finalType: true,
       description: true,
       prerequisites: true,
       officialDifficultyRating: true,
@@ -45,6 +48,7 @@ export async function getBySlug(slug: string) {
       name: true,
       slug: true,
       code: true,
+      finalType: true,
       description: true,
       prerequisites: true,
       officialDifficultyRating: true,
@@ -105,6 +109,7 @@ export async function update(
   id: string,
   data: {
     name: string;
+    finalType: string;
     code?: string;
     prerequisites?: string;
     officialTimeEstimation?: number;

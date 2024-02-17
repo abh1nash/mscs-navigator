@@ -107,6 +107,7 @@ model Course {
   name                     String
   code                     String?
   description              String?
+  finalType                String?
   certificates             CertificateCourse[]
   officialTimeEstimation   Float?
   officialDifficultyRating Float?

@@ -9,6 +9,7 @@ const emit = defineEmits<{
 
 const schema = z.object({
   name: z.string().min(1),
+  finalType: z.string().min(1),
   code: z.string().optional(),
   officialTimeEstimation: z.number().optional(),
   officialDifficultyRating: z.number().optional(),
@@ -19,6 +20,7 @@ const schema = z.object({
 const state = reactive({
   name: "",
   code: "",
+  finalType: "",
   officialTimeEstimation: 0,
   officialDifficultyRating: 2,
   description: "",
@@ -62,6 +64,9 @@ async function onSubmit(event: FormSubmitEvent<typeof schema>) {
         </UFormGroup>
         <UFormGroup label="Course Code" name="code">
           <UInput v-model="state.code" />
+        </UFormGroup>
+        <UFormGroup label="Final Type" name="finalType">
+          <UInput v-model="state.finalType" />
         </UFormGroup>
         <UFormGroup label="Description" name="description">
           <UTextarea v-model="state.description" />

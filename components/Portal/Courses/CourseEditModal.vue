@@ -6,6 +6,7 @@ const props = defineProps<{
   course: {
     name: string;
     slug: string;
+    finalType?: string | null;
     code?: string | null;
     officialTimeEstimation?: number | null;
     officialDifficultyRating?: number | null;
@@ -21,6 +22,7 @@ const emit = defineEmits<{
 
 const schema = z.object({
   name: z.string().min(1),
+  finalType: z.string().min(1),
   code: z.string().optional(),
   officialTimeEstimation: z.number().optional(),
   officialDifficultyRating: z.number().optional(),
@@ -31,6 +33,7 @@ const schema = z.object({
 const state = reactive({
   name: props.course.name,
   code: props.course.code || "",
+  finalType: props.course.finalType || "",
   officialTimeEstimation: props.course.officialTimeEstimation || 0,
   officialDifficultyRating: props.course.officialDifficultyRating || 2,
   description: props.course.description || "",
@@ -74,6 +77,9 @@ async function onSubmit(event: FormSubmitEvent<typeof schema>) {
         </UFormGroup>
         <UFormGroup label="Course Code" name="code">
           <UInput v-model="state.code" />
+        </UFormGroup>
+        <UFormGroup label="Final Type" name="finalType">
+          <UInput v-model="state.finalType" />
         </UFormGroup>
         <UFormGroup label="Description" name="description">
           <UTextarea v-model="state.description" />

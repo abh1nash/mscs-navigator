@@ -12,6 +12,7 @@ const bodySchema = z.object({
   name: z.string(),
   code: z.string().optional(),
   prerequisites: z.string().optional(),
+  finalType: z.string(),
   officialTimeEstimation: z.number().optional(),
   officialDifficultyRating: z.number().optional(),
   description: z.string().optional(),
