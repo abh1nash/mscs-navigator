@@ -1,5 +1,82 @@
 import { db } from "../prisma";
 
+export async function updateAverageRating(where: {
+  courseId?: string;
+  specializationId?: string;
+  certificateId?: string;
+}) {
+  if (where.courseId) {
+    const courseAvg = await db.review.aggregate({
+      _avg: {
+        rating: true,
+        instructorRating: true,
+        difficultyRating: true,
+        timeTaken: true,
+      },
+      where: {
+        courseId: where.courseId,
+      },
+    });
+    await db.course.update({
+      where: {
+        id: where.courseId,
+      },
+      data: {
+        avgRating: courseAvg._avg.rating,
+        avgInstructorRating: courseAvg._avg.instructorRating,
+        avgDifficultyRating: courseAvg._avg.difficultyRating,
+        avgTimeTaken: courseAvg._avg.timeTaken,
+      },
+    });
+  }
+
+  if (where.specializationId) {
+    const specializationAvg = await db.review.aggregate({
+      _avg: {
+        rating: true,
+        instructorRating: true,
+        difficultyRating: true,
+      },
+      where: {
+        specializationId: where.specializationId,
+      },
+    });
+    await db.specialization.update({
+      where: {
+        id: where.specializationId,
+      },
+      data: {
+        avgRating: specializationAvg._avg.rating,
+        avgInstructorRating: specializationAvg._avg.instructorRating,
+        avgDifficultyRating: specializationAvg._avg.difficultyRating,
+      },
+    });
+  }
+
+  if (where.certificateId) {
+    const certificateAvg = await db.review.aggregate({
+      _avg: {
+        rating: true,
+        instructorRating: true,
+        difficultyRating: true,
+      },
+      where: {
+        certificateId: where.certificateId,
+      },
+    });
+    await db.certificate.update({
+      where: {
+        id: where.certificateId,
+      },
+      data: {
+        avgRating: certificateAvg._avg.rating,
+        avgInstructorRating: certificateAvg._avg.instructorRating,
+        avgDifficultyRating: certificateAvg._avg.difficultyRating,
+      },
+    });
+  }
+}
+
 export async function create(data: {
   courseId?: string;
   specializationId?: string;
@@ -44,55 +121,80 @@ export async function create(data: {
   });
 
   // update avg rating in course, specialization, or certificate
-  const [avgRating] = await db.$transaction([
-    db.review.aggregate({
-      _avg: {
-        rating: true,
-        instructorRating: true,
-        difficultyRating: true,
-        timeTaken: true,
-      },
-      where: {
-        courseId: data.courseId,
-      },
-    }),
-    // db.review.aggregate({
-    //   _avg: {
-    //     rating: true,
-    //     instructorRating: true,
-    //     difficultyRating: true,
-    //   },
-    //   where: {
-    //     specializationId: data.specializationId,
-    //   },
-    // }),
-    // db.review.aggregate({
-    //   _avg: {
-    //     rating: true,
-    //     instructorRating: true,
-    //     difficultyRating: true,
-    //   },
-    //   where: {
-    //     certificateId: data.certificateId,
-    //   },
-    // }),
-  ]);
-
-  if (data.courseId) {
-    await db.course.update({
-      where: {
-        id: data.courseId,
-      },
-      data: {
-        avgRating: avgRating._avg.rating,
-        avgInstructorRating: avgRating._avg.instructorRating,
-        avgDifficultyRating: avgRating._avg.difficultyRating,
-        avgTimeTaken: avgRating._avg.timeTaken,
-      },
-    });
-  }
+  await updateAverageRating({
+    courseId: data.courseId,
+    specializationId: data.specializationId,
+    certificateId: data.certificateId,
+  });
 
   return review;
+}
+
+export async function deleteById(id: string) {
+  const review = await db.review.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!review) {
+    throw new Error("Review not found");
+  }
+
+  await db.review.delete({
+    where: {
+      id,
+    },
+  });
+
+  // update avg rating in course, specialization, or certificate
+  await updateAverageRating({
+    courseId: review.courseId || undefined,
+    specializationId: review.specializationId || undefined,
+    certificateId: review.certificateId || undefined,
+  });
+}
+
+export async function update(
+  id: string,
+  data: {
+    comment: string;
+    instructorRating: number;
+    difficultyRating: number;
+    rating: number;
+    timeTaken: number;
+  }
+) {
+  const review = await db.review.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!review) {
+    throw new Error("Review not found");
+  }
+
+  const updatedReview = await db.review.update({
+    where: {
+      id,
+    },
+    data: {
+      comment: data.comment,
+      instructorRating: data.instructorRating,
+      difficultyRating: data.difficultyRating,
+      rating: data.rating,
+    },
+  });
+
+  // update avg rating in course, specialization, or certificate
+  await updateAverageRating({
+    courseId: review.courseId || undefined,
+    specializationId: review.specializationId || undefined,
+    certificateId: review.certificateId || undefined,
+  });
+
+  return updatedReview;
 }
 
 export async function get(

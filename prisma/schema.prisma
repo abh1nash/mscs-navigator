@@ -57,14 +57,18 @@ model ResetToken {
 }
 
 model Certificate {
-  id              String                      @id @default(uuid())
-  name            String
-  description     String?
-  courses         CertificateCourse[]
-  specializations CertificateSpecialization[]
-  reviews         Review[]
-  created         DateTime                    @default(now())
-  updated         DateTime                    @updatedAt
+  id                  String                      @id @default(uuid())
+  name                String
+  description         String?
+  courses             CertificateCourse[]
+  specializations     CertificateSpecialization[]
+  avgRating           Float?
+  avgDifficultyRating Float?
+  avgInstructorRating Float?
+  avgTimeTaken        Float?
+  reviews             Review[]
+  created             DateTime                    @default(now())
+  updated             DateTime                    @updatedAt
 }
 
 model CertificateCourse {
@@ -90,16 +94,20 @@ model CertificateSpecialization {
 }
 
 model Specialization {
-  id           String                      @id @default(uuid())
-  name         String
-  description  String?
-  difficulty   Float?
-  courses      Course[]
-  certificates CertificateSpecialization[]
-  reviews      Review[]
-  slug         String                      @unique
-  created      DateTime                    @default(now())
-  updated      DateTime                    @updatedAt
+  id                  String                      @id @default(uuid())
+  name                String
+  description         String?
+  difficulty          Float?
+  avgRating           Float?
+  avgDifficultyRating Float?
+  avgInstructorRating Float?
+  avgTimeTaken        Float?
+  courses             Course[]
+  certificates        CertificateSpecialization[]
+  reviews             Review[]
+  slug                String                      @unique
+  created             DateTime                    @default(now())
+  updated             DateTime                    @updatedAt
 }
 
 model Course {
